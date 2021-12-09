@@ -7,18 +7,14 @@ import CurrencyService from "./js/currency.js";
 $(document).ready(function() {
   $('#currencyConvert').click(function() {
     const number = $("#number").val();
+    const outputcurrency = $("#currency").val();
     $('#currencyConvert').val("");
 
     let promise = CurrencyService.getCurrency();
     promise.then(function(response) {
-      const body =JSON.parse(response);
-      const currencyConvert = new CurrencyService.converter(body, number);
-
-      let Currency = [];
-      for (let i = 0; i < body.length; i++) {
-        $('.showCurrency').html(Currency);
-        $('.showConverter').html(currencyConvert);
-      }
+      const body =JSON.parse(response);      
+        $('.showCurrency').html(`${number} USD converts to;${number * body.conversion_rates[outputcurrency]} ${outputcurrency}`);
+        
     }, function(error) {
       $('.showErrors').text(`There was an error processing your request: ${error}`);
     });
